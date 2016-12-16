@@ -112,6 +112,9 @@ public class CrimeListFragment extends Fragment {
             mCrimeRecyclerView.setAdapter(mAdapter);
         } else {
             mAdapter.notifyDataSetChanged();
+//            mAdapter.notifyItemChanged();
+            // TODO: figure out how to use Adapter.notifyItemChanged() to reload one item at a time
+            // instead of the entire list of crimes.
         }
 
     }
