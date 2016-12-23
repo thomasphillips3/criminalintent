@@ -21,6 +21,7 @@ import java.util.List;
 public class CrimeListFragment extends Fragment {
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
+    private int mCurrentPosition = 0;
 
     @Override
     public void onResume() {
@@ -112,9 +113,7 @@ public class CrimeListFragment extends Fragment {
             mCrimeRecyclerView.setAdapter(mAdapter);
         } else {
             mAdapter.notifyDataSetChanged();
-//            mAdapter.notifyItemChanged();
-            // TODO: figure out how to use Adapter.notifyItemChanged() to reload one item at a time
-            // instead of the entire list of crimes.
+            mAdapter.notifyItemChanged(mCurrentPosition);
         }
 
     }
