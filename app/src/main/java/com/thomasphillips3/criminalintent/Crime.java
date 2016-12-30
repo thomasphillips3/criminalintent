@@ -1,6 +1,5 @@
 package com.thomasphillips3.criminalintent;
 
-import java.text.DateFormat;
 import java.util.Date;
 import java.util.UUID;
 
@@ -14,8 +13,8 @@ public class Crime {
     private Date mDate;
     private boolean mSolved;
 
-    public String getDate() {
-        return DateFormat.getDateTimeInstance().format(mDate);
+    public Date getDate() {
+        return mDate;
     }
 
     public void setDate(Date date) {
@@ -47,5 +46,10 @@ public class Crime {
 
     public void setTitle(String title) {
         mTitle = title;
+    }
+
+    @Override
+    public String toString() {
+        return mTitle;
     }
 }

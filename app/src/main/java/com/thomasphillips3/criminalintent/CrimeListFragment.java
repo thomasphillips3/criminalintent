@@ -115,6 +115,5 @@ public class CrimeListFragment extends Fragment {
             mAdapter.notifyDataSetChanged();
             mAdapter.notifyItemChanged(mCurrentPosition);
         }
-
     }
 }
