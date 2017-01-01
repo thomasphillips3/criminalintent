@@ -29,6 +29,7 @@ public class CrimeFragment extends Fragment {
     private EditText mTitleField;
     private Button mDateButton;
     private Button mTimeButton;
+    private Button mDeleteCrimeButton;
     private CheckBox mSolvedCheckBox;
     private SimpleDateFormat mDateFormat;
     private SimpleDateFormat mTimeFormat;
@@ -119,6 +120,13 @@ public class CrimeFragment extends Fragment {
             }
         });
 
+        mDeleteCrimeButton = (Button)v.findViewById(R.id.delete_crime_button);
+        mDeleteCrimeButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                deleteCrime();
+            }
+        });
+
         return v;
     }
 
@@ -148,5 +156,9 @@ public class CrimeFragment extends Fragment {
     private void updateTime() {
         mTimeButton.setText(mTimeFormat.format(mCrime.getDate()));
         Log.i(this.getClass().toString(), "updateTime() CALLED");
+    }
+
+    private void deleteCrime() {
+        Log.v(getClass().toString(), "DELETE THIS CRIME!");
     }
 }
