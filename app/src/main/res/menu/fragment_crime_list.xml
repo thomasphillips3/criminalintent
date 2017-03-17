@@ -9,6 +9,7 @@
         app:showAsAction="ifRoom|withText" />
     <item
         android:id="@+id/menu_item_show_subtitle"
+        android:icon="@drawable/ic_show_total"
         android:title="@string/show_total"
         app:showAsAction="ifRoom" />
 </menu>
