@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -150,15 +149,14 @@ public class CrimeFragment extends Fragment {
 
     private void updateDate() {
         mDateButton.setText(mDateFormat.format(mCrime.getDate()));
-        Log.i(this.getClass().toString(), "updateDate() CALLED");
     }
 
     private void updateTime() {
         mTimeButton.setText(mTimeFormat.format(mCrime.getDate()));
-        Log.i(this.getClass().toString(), "updateTime() CALLED");
     }
 
     private void deleteCrime() {
-        Log.v(getClass().toString(), "DELETE THIS CRIME!");
+        CrimeLab.get(getActivity()).deleteCrime(mCrime);
+        getActivity().finish();
     }
 }

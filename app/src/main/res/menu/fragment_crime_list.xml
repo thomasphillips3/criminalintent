@@ -8,8 +8,8 @@
         android:title="@string/new_crime"
         app:showAsAction="ifRoom|withText" />
     <item
-        android:id="@+id/menu_item_show_subtitle"
+        android:id="@+id/menu_item_show_total"
         android:icon="@drawable/ic_show_total"
         android:title="@string/show_total"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom|withText" />
 </menu>

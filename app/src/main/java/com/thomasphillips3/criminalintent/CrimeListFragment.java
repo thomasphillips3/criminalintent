@@ -26,8 +26,8 @@ public class CrimeListFragment extends Fragment {
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
     private int mCurrentPosition = 0;
-    private boolean mSubtitleVisible;
-    private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
+    private boolean mTotalVisible;
+    private static final String SAVED_TOTAL_VISIBLE = "total";
 
     @Override
     public void onResume() {
@@ -46,7 +46,7 @@ public class CrimeListFragment extends Fragment {
                 new LinearLayoutManager(getActivity()));
 
         if (savedInstanceState != null) {
-            mSubtitleVisible = savedInstanceState.getBoolean(SAVED_SUBTITLE_VISIBLE);
+            mTotalVisible = savedInstanceState.getBoolean(SAVED_TOTAL_VISIBLE);
         }
 
         updateUI();
@@ -134,8 +134,8 @@ public class CrimeListFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_crime_list, menu);
 
-        MenuItem subtitleItem = menu.findItem(R.id.menu_item_show_subtitle);
-        if (mSubtitleVisible) {
+        MenuItem subtitleItem = menu.findItem(R.id.menu_item_show_total);
+        if (mTotalVisible) {
             subtitleItem.setTitle(R.string.hide_total);
         } else {
             subtitleItem.setTitle(R.string.show_total);
@@ -156,11 +156,11 @@ public class CrimeListFragment extends Fragment {
                 CrimeLab.get(getActivity()).addCrime(crime);
                 Intent intent = CrimePagerActivity
                         .newIntent(getActivity(), crime.getId());
-                startActivity(intent);
+                startActivityForResult(intent, getTargetRequestCode());
                 return true;
 
-            case R.id.menu_item_show_subtitle:
-                mSubtitleVisible = !mSubtitleVisible;
+            case R.id.menu_item_show_total:
+                mTotalVisible = !mTotalVisible;
                 getActivity().invalidateOptionsMenu();
                 updateSubtitle();
                 return true;
@@ -175,7 +175,7 @@ public class CrimeListFragment extends Fragment {
         int crimeCount = crimeLab.getCrimes().size();
         String subtitle = getString(R.string.subtitle_format, crimeCount);
 
-        if (!mSubtitleVisible)
+        if (!mTotalVisible)
             subtitle = null;
 
         AppCompatActivity activity = (AppCompatActivity) getActivity();
@@ -185,6 +185,6 @@ public class CrimeListFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(SAVED_SUBTITLE_VISIBLE, mSubtitleVisible);
+        outState.putBoolean(SAVED_TOTAL_VISIBLE, mTotalVisible);
     }
 }
