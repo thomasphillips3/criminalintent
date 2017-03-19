@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -28,6 +30,7 @@ public class CrimeListFragment extends Fragment {
     private int mCurrentPosition = 0;
     private boolean mTotalVisible;
     private static final String SAVED_TOTAL_VISIBLE = "total";
+    private LinearLayout noMessageView;
 
     @Override
     public void onResume() {
@@ -39,6 +42,16 @@ public class CrimeListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_crime_list, container, false);
+        ImageButton mAddCrimeButton = (ImageButton) view.findViewById(R.id.add_crime_button);
+        noMessageView = (LinearLayout) view.findViewById(R.id.no_crimes_layout);
+
+        mAddCrimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addCrime();
+            }
+        });
+
 
         mCrimeRecyclerView = (RecyclerView) view
                 .findViewById(R.id.crime_recycler_view);
@@ -118,6 +131,12 @@ public class CrimeListFragment extends Fragment {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
 
+        if (crimes.size() == 0) {
+            noMessageView.setVisibility(View.VISIBLE);
+        } else {
+            noMessageView.setVisibility(View.INVISIBLE);
+        }
+
         if (null == mAdapter){
             mAdapter = new CrimeAdapter(crimes);
             mCrimeRecyclerView.setAdapter(mAdapter);
@@ -152,11 +171,7 @@ public class CrimeListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_item_new_crime:
-                Crime crime = new Crime();
-                CrimeLab.get(getActivity()).addCrime(crime);
-                Intent intent = CrimePagerActivity
-                        .newIntent(getActivity(), crime.getId());
-                startActivityForResult(intent, getTargetRequestCode());
+                addCrime();
                 return true;
 
             case R.id.menu_item_show_total:
@@ -186,5 +201,13 @@ public class CrimeListFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(SAVED_TOTAL_VISIBLE, mTotalVisible);
+    }
+
+    private void addCrime() {
+        Crime crime = new Crime();
+        CrimeLab.get(getActivity()).addCrime(crime);
+        Intent intent = CrimePagerActivity
+                .newIntent(getActivity(), crime.getId());
+        startActivityForResult(intent, getTargetRequestCode());
     }
 }
