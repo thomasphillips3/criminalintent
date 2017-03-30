@@ -146,7 +146,7 @@ public class CrimeListFragment extends Fragment {
             mCrimeRecyclerView.setAdapter(mAdapter);
         } else {
             mAdapter.setCrimes(crimes);
-            mAdapter.notifyDataSetChanged();    
+            mAdapter.notifyDataSetChanged();
         }
 
         updateSubtitle();
