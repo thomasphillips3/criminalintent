@@ -37,7 +37,30 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:text="@string/crime_solved_label" />
-
+    <Button
+        android:id="@+id/crime_suspect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="@string/crime_suspect_text"
+        android:background="@android:color/holo_purple"/>
+    <Button
+        android:id="@+id/call_suspect_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@android:color/holo_blue_dark"
+        android:text="@string/call_suspect"/>
+    <Button
+        android:id="@+id/crime_report"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="@string/crime_report_text"
+        android:background="@android:color/holo_green_dark"/>
     <Button
         android:id="@+id/delete_crime_button"
         android:text="Delete Crime"

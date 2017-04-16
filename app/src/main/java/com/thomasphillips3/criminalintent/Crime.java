@@ -10,8 +10,27 @@ import java.util.UUID;
 public class Crime {
     private UUID mId;
     private String mTitle;
+    private String mSuspect;
+
+    public long getContactId() {
+        return mContactId;
+    }
+
+    public void setContactId(long contactId) {
+        mContactId = contactId;
+    }
+
+    private long mContactId;
     private Date mDate;
     private boolean mSolved;
+
+    public String getSuspect() {
+        return mSuspect;
+    }
+
+    public void setSuspect(String suspect) {
+        mSuspect = suspect;
+    }
 
     public Date getDate() {
         return mDate;
