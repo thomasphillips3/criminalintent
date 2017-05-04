@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -27,6 +28,8 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+
+import com.thomasphillips3.criminalintent.utils.PictureUtils;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -255,6 +258,8 @@ public class CrimeFragment extends Fragment {
             }
         });
 
+        updatePhotoView();
+
         return v;
     }
 
@@ -299,6 +304,8 @@ public class CrimeFragment extends Fragment {
             } finally {
                 c.close();
             }
+        } else if (requestCode == REQUEST_PHOTO) {
+            updatePhotoView();
         }
     }
 
@@ -344,5 +351,14 @@ public class CrimeFragment extends Fragment {
                 mCrime.getTitle(), dateString, solvedString, suspect);
 
         return report;
+    }
+
+    private void updatePhotoView() {
+        if (mPhotoFile == null || !mPhotoFile.exists()) {
+            mPhotoView.setImageDrawable(null);
+        } else {
+            Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
+            mPhotoView.setImageBitmap(bitmap);
+        }
     }
 }
