@@ -26,7 +26,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.thomasphillips3.criminalintent.utils.PictureUtils;
@@ -50,7 +49,6 @@ public class CrimeFragment extends Fragment {
     private Button mReportButton;
     private Button mSuspectButton;
     private Button mCallSuspectButton;
-    private ImageButton mPhotoButton;
     private ImageView mPhotoView;
     private CheckBox mSolvedCheckBox;
     private SimpleDateFormat mDateFormat;
@@ -150,7 +148,6 @@ public class CrimeFragment extends Fragment {
 
         if (mCrime.getSuspect() != null) {
             mSuspectButton.setText(mCrime.getSuspect());
-//            mCallSuspectButton.setVisibility(View.INVISIBLE);
         }
 
         PackageManager packageManager = getActivity().getPackageManager();
@@ -165,22 +162,24 @@ public class CrimeFragment extends Fragment {
                 mPhotoFile != null &&
                 captureImage.resolveActivity(packageManager) != null;
 
-        mPhotoButton = (ImageButton) v.findViewById(R.id.crime_camera);
-        mPhotoButton.setEnabled(canTakePhoto);
 
         if (canTakePhoto) {
             Uri uri = Uri.fromFile(mPhotoFile);
             captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         }
 
-        mPhotoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
+        mPhotoView = (ImageView) v.findViewById(R.id.crime_photo);
+        mPhotoView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startActivityForResult(captureImage, REQUEST_PHOTO);
+                if (!mPhotoFile.exists()){
+                    Log.d(this.toString(), "No picture file associated with this crime. Grabbing one now");
+                    startActivityForResult(captureImage, REQUEST_PHOTO);
+                } else {
+                    Log.d(this.toString(), mPhotoFile.getPath().toString() + "exists." +
+                            "Show alert dialog to see if user wants to replace it.");
+                }
             }
         });
-
-        mPhotoView = (ImageView) v.findViewById(R.id.crime_photo);
 
         mReportButton = (Button) v.findViewById(R.id.crime_report);
         mReportButton.setOnClickListener(new View.OnClickListener() {
@@ -300,7 +299,6 @@ public class CrimeFragment extends Fragment {
                 mCrime.setSuspect(suspect);
                 mCrime.setContactId(contactId);
                 mSuspectButton.setText(suspect);
-//                mCallSuspectButton.setVisibility(View.VISIBLE);
             } finally {
                 c.close();
             }
