@@ -12,6 +12,10 @@ public class Crime {
     private String mTitle;
     private String mSuspect;
 
+    public String getPhotoFilename() {
+        return "IMG_" + getId().toString() + ".jpg";
+    }
+
     public long getContactId() {
         return mContactId;
     }
