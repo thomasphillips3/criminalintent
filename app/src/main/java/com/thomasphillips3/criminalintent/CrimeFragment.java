@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ShareCompat;
@@ -169,14 +170,23 @@ public class CrimeFragment extends Fragment {
         }
 
         mPhotoView = (ImageView) v.findViewById(R.id.crime_photo);
+        mPhotoView.setLongClickable(mPhotoFile.exists());
+        mPhotoView.setOnLongClickListener(new View.OnLongClickListener() {
+            public boolean onLongClick(View v) {
+                startActivityForResult(captureImage, REQUEST_PHOTO);
+                return true;
+            }
+        });
         mPhotoView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (!mPhotoFile.exists()){
                     Log.d(this.toString(), "No picture file associated with this crime. Grabbing one now");
                     startActivityForResult(captureImage, REQUEST_PHOTO);
                 } else {
-                    Log.d(this.toString(), mPhotoFile.getPath().toString() + "exists." +
-                            "Show alert dialog to see if user wants to replace it.");
+                    Log.d(this.toString(), mPhotoFile.getPath().toString() + "exists.");
+                    Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
+                    showPictureDialog(bitmap);
+
                 }
             }
         });
@@ -358,5 +368,11 @@ public class CrimeFragment extends Fragment {
             Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
             mPhotoView.setImageBitmap(bitmap);
         }
+    }
+
+    private void showPictureDialog(Bitmap bitmap) {
+        DialogFragment newFragment = PictureDialogFragment
+                .newInstance(bitmap);
+        newFragment.show(getFragmentManager(), "dialog");
     }
 }
