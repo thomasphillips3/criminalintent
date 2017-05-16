@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -68,7 +69,7 @@ public class CrimeListFragment extends Fragment {
     }
 
     private class CrimeHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener {
+            implements View.OnClickListener, View.OnLongClickListener {
         private TextView mTitleTextView;
         private TextView mDateTextView;
         private CheckBox mSolvedCheckBox;
@@ -77,6 +78,7 @@ public class CrimeListFragment extends Fragment {
         public CrimeHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
 
             mTitleTextView = (TextView) itemView
                     .findViewById(R.id.list_item_crime_title_text_view);
@@ -90,6 +92,13 @@ public class CrimeListFragment extends Fragment {
         public void onClick(View v) {
             Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
             startActivity(intent);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            Log.d(this.toString(), "long Press");
+            deleteCrime(mCrime);
+            return false;
         }
 
         public void bindCrime(Crime crime) {
@@ -213,5 +222,10 @@ public class CrimeListFragment extends Fragment {
         Intent intent = CrimePagerActivity
                 .newIntent(getActivity(), crime.getId());
         startActivityForResult(intent, getTargetRequestCode());
+    }
+
+    private void deleteCrime(Crime crime) {
+        CrimeLab.get(getActivity()).deleteCrime(crime);
+        updateUI();
     }
 }
