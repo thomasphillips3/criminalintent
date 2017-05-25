@@ -1,7 +1,8 @@
 package com.thomasphillips3.criminalintent;
 
 
-import android.content.Intent;
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +32,19 @@ public class CrimeListFragment extends Fragment {
     private boolean mTotalVisible;
     private static final String SAVED_TOTAL_VISIBLE = "total";
     private LinearLayout noMessageView;
+    private Callbacks mCallbacks;
+
+    public interface Callbacks {
+        void onCrimeSelected(Crime crime);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof Activity) {
+            mCallbacks = (Callbacks) context;
+        }
+    }
 
     @Override
     public void onResume() {
@@ -89,8 +103,7 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
-            startActivity(intent);
+            mCallbacks.onCrimeSelected(mCrime);
         }
 
         @Override
@@ -138,7 +151,7 @@ public class CrimeListFragment extends Fragment {
         }
     }
 
-    private void updateUI() {
+    public void updateUI() {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
 
@@ -214,12 +227,17 @@ public class CrimeListFragment extends Fragment {
         outState.putBoolean(SAVED_TOTAL_VISIBLE, mTotalVisible);
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
+    }
+
     private void addCrime() {
         Crime crime = new Crime();
         CrimeLab.get(getActivity()).addCrime(crime);
-        Intent intent = CrimePagerActivity
-                .newIntent(getActivity(), crime.getId());
-        startActivityForResult(intent, getTargetRequestCode());
+        updateUI();
+        mCallbacks.onCrimeSelected(crime);
     }
 
     private void deleteCrime(Crime crime) {
